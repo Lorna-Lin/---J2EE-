@@ -3,7 +3,7 @@
 作为期末项目完成的项目论文管理平台，一个层次清楚结构简单的springboot项目，可以注册以及登录账号并在平台上完成对个人或所管理成员、项目和论文的增加、删除、查找、修改以及审核。
 
 ## 演示
-![Show-Gif]()
+![Show-Gif](https://github.com/Lorna-Lin/---J2EE-/blob/main/J2ee.gif)
 
 
 ## 特点
@@ -51,5 +51,5 @@ datasource:
 
 @王盛阳 10215101508
 
-已上传在github
+已上传在github https://github.com/Lorna-Lin/---J2EE-.git
 ## 
