@@ -51,5 +51,5 @@ datasource:
 
 @王盛阳 10215101508
 
-已上传在github https://github.com/Lorna-Lin/projectmanagement-J2ee.git
+已上传在github https://github.com/Lorna-Lin/ProjectManagment-J2EE
 ## 
