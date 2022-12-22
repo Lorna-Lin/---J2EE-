@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.j2eefinalv2.mapper.ProjectMapper">
+
+    <!--复用SQL片段  -->
+    <sql id="projectListWhere">
+        <where>
+            <if test="title != null" >
+                title like concat('%',#{title},'%')
+            </if>
+            <if test="uploader != null" >
+                and uploader like concat('%',#{uploader},'%')
+            </if>
+            <if test="type != null" >
+                and type like concat('%',#{type},'%')
+            </if>
+            <if test="type != null" >
+                and fund like concat('%',#{fund},'%')
+            </if>
+        </where>
+    </sql>
+
+
+    <select id="getProject" resultType="com.example.j2eefinalv2.entity.Project">
+        select * from project where "title" = #{title}
+    </select>
+
+    <update id="setScore">
+        update project set score = #{score} where title = #{title}
+    </update>
+
+    <select id="getProjectList" resultType="com.example.j2eefinalv2.entity.Project" >
+        select * from project
+        <include refid="projectListWhere"/>
+    </select>
+
+    <insert id="addProject" parameterType="com.example.j2eefinalv2.entity.Project">
+        insert into project(title,uploader,fund,address,type)
+        values(#{title},#{uploader},#{fund},#{address},#{type})
+    </insert>
+</mapper>

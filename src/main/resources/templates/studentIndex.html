@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <link  th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <!-- MetisMenu CSS -->
+    <link th:href="@{/css/metisMenu.min.css}" rel="stylesheet" />
+    <!-- DataTables CSS -->
+    <link th:href="@{/css/dataTables.bootstrap.css}" rel="stylesheet" />
+    <!-- Custom CSS -->
+    <link th:href="@{/css/sb-admin-2.css}" rel="stylesheet" />
+    <!-- Custom Fonts -->
+    <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/css/boot-crm.css}" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="wrapper">
+    <!-- 导航栏部分 -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation"
+         style="margin-bottom: 0">
+        <div class="navbar-header">
+            <div class="navbar-brand" >项目论文管理系统</div>
+        </div>
+        <!-- 导航栏右侧图标部分 -->
+        <ul class="nav navbar-top-links navbar-right">
+            <!-- 用户信息和退出 start -->
+            <li class="dropdown">
+
+                <ul>
+                    <li><a href="#"><i class="fa fa-user fa-fw"></i>
+                        用户：<th:block th:text="${session.user.name}"/>
+                    </a>
+                    </li>
+                    <li>
+                        <a href="/logout">
+                            <i class="fa fa-sign-out fa-fw"></i>退出登录
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <!-- 用户信息和系统设置结束 -->
+        </ul>
+        <!-- 左侧显示列表部分 start-->
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse">
+                <ul class="nav" >
+                    <li>
+                        <a href="/studentPaper" class="active">
+                            <i class="fa fa-edit fa-fw"></i> 我的论文
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/studentProject" class="active">
+                            <i class="fa fa-dashboard fa-fw" ></i> 我的项目
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- 左侧显示列表部分 end-->
+    </nav>
+</div>
+</body>
+</html>

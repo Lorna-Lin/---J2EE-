@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.j2eefinalv2.mapper.UserMapper">
+
+    <sql id="userListWhere">
+        <where>
+            <if test="username != null" >
+                username like concat('%',#{username},'%')
+            </if>
+            <if test="name != null" >
+                and name like concat('%',#{name},'%')
+            </if>
+            and role = '普通用户'
+        </where>
+    </sql>
+    <select id="getUserList" resultType="com.example.j2eefinalv2.entity.User">
+        select username, name from "user"
+        <include refid="userListWhere"/>
+    </select>
+
+
+    <select id="getUser" resultType="com.example.j2eefinalv2.entity.User">
+        select "username" from "user" where username = #{username}
+    </select>
+
+    <select id="getUserByName" resultType="com.example.j2eefinalv2.entity.User">
+        select * from "user" where name = #{name}
+    </select>
+
+    <select id="getUserLogin" resultType="com.example.j2eefinalv2.entity.User">
+        select * from "user" where username = #{username} and password = #{password}
+    </select>
+
+    <insert id="register" parameterType="com.example.j2eefinalv2.entity.User">
+        insert into "user"(username,password, role, name) values(#{username},#{password},#{role},#{name})
+    </insert>
+
+    <delete id="deleteUser" parameterType="String">
+        delete from "user" where username = #{username};
+    </delete>
+</mapper>

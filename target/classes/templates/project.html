@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <!-- 引入css样式文件 -->
+    <!-- Bootstrap Core CSS -->
+    <link href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <!-- MetisMenu CSS -->
+    <link href="../static/css/metisMenu.min.css" th:href="@{/css/metisMenu.min.css}" rel="stylesheet" />
+    <!-- DataTables CSS -->
+    <link href="../static/css/dataTables.bootstrap.css" th:href="@{/css/dataTables.bootstrap.css}" rel="stylesheet" />
+    <!-- Custom CSS -->
+    <link href="../static/css/sb-admin-2.css" th:href="@{css/sb-admin-2.css}" rel="stylesheet" />
+    <!-- Custom Fonts -->
+    <link href="../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}" rel="stylesheet" type="text/css" />
+    <link href="../static/css/boot-crm.css" th:href="@{/css/boot-crm.css}" rel="stylesheet" type="text/css" />
+    <title>首页</title>
+</head>
+<body>
+<div id="wrapper">
+    <!-- 导航栏部分 -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation"
+         style="margin-bottom: 0">
+        <div class="navbar-header">
+          <div class="navbar-brand" >项目论文管理系统</div>
+        </div>
+        <!-- 导航栏右侧图标部分 -->
+        <ul class="nav navbar-top-links navbar-right">
+          <!-- 用户信息和退出 start -->
+          <li class="dropdown">
+
+            <ul >
+              <li><a href="#"><i class="fa fa-user fa-fw"></i>
+                用户：<th:block th:text="${session.user.name}" />
+              </a>
+              </li>
+              <li>
+                <a href="/logout">
+                  <i class="fa fa-sign-out fa-fw"></i>退出登录
+                </a>
+              </li>
+            </ul>
+          </li>
+          <!-- 用户信息和系统设置结束 -->
+        </ul>
+        <!-- 左侧显示列表部分 start-->
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse">
+                <ul class="nav" >
+                    <li>
+                        <a href="/user" class="active">
+                            <i class="fa fa-edit fa-fw"></i> 学生管理
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/paper" class="active">
+                            <i class="fa fa-dashboard fa-fw" ></i> 论文管理
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/project" class="active">
+                            <i class="fa fa-dashboard fa-fw" ></i> 项目管理
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- 左侧显示列表部分 end-->
+    </nav>
+    <!-- 项目列表查询部分  start-->
+    <div id="page-wrapper">
+        <div class="row">
+          <div class="col-lg-12">
+            <h1 class="page-header">项目信息管理</h1>
+          </div>
+          <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <form class="form-inline" method="get" action="/projectFindAll">
+                <div class="form-group">
+                    <input type="hidden" class="form-control" th:value="${session.user.role}"
+                           id="role" name="role" />
+                </div>
+              <div class="form-group">
+                <label for="title">项目名称</label>
+                <input type="text" class="form-control" id="title"
+                       name="title" />
+              </div>
+
+              <div class="form-group">
+                <label for="uploader">上传者</label>
+                <input type="text" class="form-control" id="uploader"
+                       name="uploader" />
+              </div>
+              <div class="form-group">
+                <label for="fund">基金</label>
+                <input type="text" class="form-control" id="fund"
+                       name="fund" />
+              </div>
+              <div class="form-group">
+                <label for="type">类型</label>
+                <input type="text" class="form-control" id="type"
+                       name="type" />
+              </div>
+              <button type="submit" class="btn btn-primary">查询</button>
+            </form>
+          </div>
+        </div>
+        <button class="btn btn-primary" data-toggle="modal"
+           data-target="#newPaperDialog" onclick="clearStudent()">上传</button>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">项目列表</div>
+                    <!-- /.panel-heading -->
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>项目名称</th>
+                            <th>上传者</th>
+                            <th>基金</th>
+                            <th>项目类型</th>
+                            <th>分数</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="project:${projects}">
+                            <td th:text="${project.title}"></td>
+                            <td th:text="${project.uploader}"></td>
+                            <td th:text="${project.fund}"></td>
+                            <td th:text="${project.type}"></td>
+                            <td th:text="${project.score}"></td>
+                            <td>
+                                <!-- <a href="#" class="btn btn-danger btn-xs" onclick="d(${row.ID})">下载</a> -->
+                                <a th:href="@{|/projectDownload?title=${project.title}|}" class="btn btn-danger btn-xs">下载</a>
+                                <button class="btn btn-danger btn-xs"
+                                        onclick="showSetScore(this)">设置分数</button>
+                                <div class="setScoreDiv">
+                                    <form action="/projectSetScore">
+                                        <input type="hidden" th:value="${project.title}"
+                                               readonly="readonly" name="title"/>
+                                        <input type="text" name="score"/>
+                                        <button type="submit">确定</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                  <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+    </div>
+    <!-- 论文列表查询部分  end-->
+
+
+
+
+    <!-- 上传项目模态框 -->
+    <div class="modal fade" id="newPaperDialog" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">上传项目</h4>
+                </div>
+                <!-- action="${pageContext.request.contextPath }/paperUpload" method="post" -->
+                <div class="modal-body">
+                    <form class="form-horizontal" id="new_paper_form" enctype="multipart/form-data" action="/projectUpload" method="post"
+                          onsubmit="return r()">
+                        <div class="form-group">
+                            <label for="new_title" class="col-sm-2 control-label">
+                                项目名称
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="new_title" name="title" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="new_uploader" class="col-sm-2 control-label">
+                                上传者
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:value="${session.user.name}"
+                                       readonly="readonly" id="new_uploader" name="uploader" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="new_fund" class="col-sm-2 control-label">
+                                基金
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="new_fund" name="fund" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="new_type" class="col-sm-2 control-label">
+                                类型
+                            </label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="new_type" name="type">
+                                    <option>国家级创业创新项目</option>
+                                    <option>校级创业创新项目</option>
+                                    <option>横向项目</option>
+                                    <option>纵向项目</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="new_address" class="col-sm-2 control-label">
+                                文件
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="file" class="form-control" id="new_address" multiple="multiple"  name="upload" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">上传项目</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 引入js文件 -->
+<!-- jQuery -->
+<script src="/js/jquery-1.11.3.min.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+<!-- Metis Menu Plugin JavaScript -->
+<script src="/js/metisMenu.min.js"></script>
+<!-- DataTables JavaScript -->
+<script src="/js/jquery.dataTables.min.js"></script>
+<script src="/js/dataTables.bootstrap.min.js"></script>
+<!-- Custom Theme JavaScript -->
+<script src="/js/sb-admin-2.js"></script>
+<!-- 编写js代码 -->
+<script type="text/javascript">
+  //清空上传论文窗口中的数据
+  function clearStudent() {
+    $("#new_title").val("");
+    $("#new_writer").val("")
+    $("#new_studentID").val("")
+    $("#new_type").val("")
+    $("#new_paperCount").val("");
+    $("#new_address").val("");
+  }
+  // 通过id获取修改的论文信息
+
+  //下载
+  /*
+      已弃用
+      function d(ID) {
+          $.post("${pageContext.request.contextPath }/download",{"ID":ID});
+      }
+  */
+
+  $(document).ready(function(){
+      $(".setScoreDiv").hide();
+  })
+  function showSetScore($this){
+      $($this).hide();
+      $($this).siblings('div').show();
+
+  }
+
+  function r(){
+    alert("论文上传成功！");
+    window.location.reload();
+  }
+</script>
+</body>
+</html>

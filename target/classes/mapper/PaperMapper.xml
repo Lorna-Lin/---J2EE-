@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.j2eefinalv2.mapper.PaperMapper">
+
+    <!--复用SQL片段  -->
+    <sql id="paperListWhere">
+        <where>
+            <if test="title != null" >
+                title like concat('%',#{title},'%')
+            </if>
+            <if test="uploader != null" >
+                and uploader like concat('%',#{uploader},'%')
+            </if>
+        </where>
+    </sql>
+
+
+    <select id="getPaper" resultType="com.example.j2eefinalv2.entity.Paper">
+        select * from paper where title = #{paper}
+    </select>
+
+    <select id="getPaperList" resultType="com.example.j2eefinalv2.entity.Paper" >
+        select * from paper
+        <include refid="paperListWhere"/>
+    </select>
+
+    <update id="setScore">
+        update paper set score = #{score} where title = #{title}
+    </update>
+
+    <insert id="addPaper" parameterType="com.example.j2eefinalv2.entity.Paper">
+        insert into paper(title,uploader,address)
+        values(#{title},#{uploader},#{address})
+    </insert>
+</mapper>

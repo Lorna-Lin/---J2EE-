@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/login-new.css}"
+          type=text/css rel=stylesheet>
+    <title>登录</title>
+</head>
+    <body>
+        <form class="box" action="/login" method="post">
+            <h1 align="center">项目论文管理系统</h1>
+            <div>
+                <input type="text" name="username" placeholder="用户名">
+            </div>
+            <div>
+                <input type="password" name="password" placeholder="密码">
+            </div>
+            <div>
+                <input type="submit" value="登录">
+                <input type="button" value="注册" onclick="window.location.href='/register'">
+            </div>
+            <div style="color: red" align="center" >
+                <th:block th:text="${msg}"/>
+            </div>
+        </form>
+    </body>
+</html>
